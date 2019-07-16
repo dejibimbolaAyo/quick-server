@@ -1,6 +1,11 @@
+// Load .env into process.env
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 
 const dbConnection = process.env.MONGODB_URI;
+
+console.log("DB connection", dbConnection)
 
 mongoose.Promise = global.Promise;
 

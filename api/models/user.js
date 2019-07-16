@@ -5,18 +5,15 @@ var Schema = mongoose.Schema;
 const userSchema = new Schema({
     role: {
         ref: 'Role',
-        alias: 'role',
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     firstName: {
         type: String,
-        alias: 'firstName',
         required: true
     },
     lastName: {
         type: String,
-        alias: 'lastName',
         required: true
     },
     email: {

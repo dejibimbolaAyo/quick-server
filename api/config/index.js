@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const env = process.env;
 
 exports.nodeEnv = env.NODE_ENV || 'development';

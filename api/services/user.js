@@ -1,4 +1,4 @@
-const User = require('../api/models/hospitalModel');
+const User = require("../models/user");
 
 exports.create = function (data) {
     return User.create(data);

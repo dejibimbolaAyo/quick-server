@@ -1,5 +1,5 @@
-import { findByIdOrPhoneNo, findOne } from "../../services/customerService";
-import { compareHash } from "../../helper/crypt";
+const User = require("../../services/user");
+const crypt = require("../../helper/crypt");
 
 const passport    = require('passport');
 const JwtStrategy = require("passport-jwt").Strategy;
@@ -8,11 +8,11 @@ const { ExtractJwt } = require('passport-jwt');
 
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('authorization'),
-    secretOrKey   : "JamiiSecretCodeShouldBeFromEnv"
+    secretOrKey   : process.env.JWT_SECRET
 }, async (req, payload, done) => {
     try {
         // find user
-        const user =  await findByIdOrPhoneNo(payload.sub);
+        const user =  await User.findOneById(payload.sub);
         // if user does not exist
         if (!user) {
             return done(null, false)
@@ -27,16 +27,15 @@ passport.use(new JwtStrategy({
 ));
 
 passport.use(new LocalStrategy({
-        usernameField: 'jamiiIdOrPhoneNo',
+        usernameField: 'username',
         passwordField: 'password'
-    }, async (jamiiIdOrPhoneNo, password, done) => {
+    }, async (username, password, done) => {
         try {
-            const user = await findByIdOrPhoneNo({jamiiIdOrPhoneNo})
+            const user = await User.findOneById({username})
             // if user does not exist
             .then((user) => {
-                const match = compareHash(password, user.password)
+                const match = crypt.compareHash(password, user.password)
                 if(match) {
-                    console.log(user.password)
                     return match
                 } 
             })
