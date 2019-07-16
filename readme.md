@@ -13,7 +13,7 @@ The list will keep growing
 After cloning this repo or forking the repository, ensure you run the following command
 
 ```bash
-$ npm install
+npm install
 ```
 
 #### Set up database connection
@@ -23,14 +23,14 @@ Then, set your mongoDB connection as given in the `.env-example` file
 To start the server, run the following command
 
 ```bash
-$ npm run start
+npm run start
 ```
 
 #### Run database migration (Seed database)
 For a lack of better approach, the database is seeded with new seed files whenever you run the project with
 
 ```bash
-$ npm run start
+npm run start
 ```
 
 ## Contribution
