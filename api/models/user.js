@@ -1,12 +1,13 @@
 const appRoot = require('app-root-path');
 const mongoose = require(`${appRoot}/database/config/connection`);
+const crypt = require("../helper/crypt");
 
 var Schema = mongoose.Schema;
 const userSchema = new Schema({
     role: {
         ref: 'Role',
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        // required: true
     },
     firstName: {
         type: String,
@@ -39,12 +40,12 @@ const userSchema = new Schema({
     },
     hash: {
         type: String,
-        required: true,
-        select: false
+        // required: true,
+        select: false,
     },
     salt: {
         type: String,
-        required: true,
+        // required: true,
         select: false
     }
 },
@@ -66,8 +67,18 @@ userSchema.set('toObject', {
     virtuals: true
 });
 
-userSchema.methods.comparePassword = function comparePassword(hash) {
-    return hash === this.hash;
+userSchema.methods.generateSalt = (length) => {
+    return crypt.getSalt(length);
+}
+
+userSchema.methods.hashPassword = (salt, password) => {
+    const salted = salt+password;
+    return crypt.getHash(salted);
+}
+
+userSchema.methods.comparePassword = (plainPassword) => {
+    const salted = this.salt+plainPassword;
+    return crypt.compareHash(salted, this.hash);
 };
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema, 'users');

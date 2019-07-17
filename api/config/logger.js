@@ -20,7 +20,7 @@ const options = {
     console: {
         level: 'debug',
         handleExceptions: true,
-        json: false,
+        json: true,
         colorize: true,
     },
 };

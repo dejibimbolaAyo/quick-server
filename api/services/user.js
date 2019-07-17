@@ -1,7 +1,15 @@
 const User = require("../models/user");
 
-exports.create = function (data) {
-    return User.create(data);
+exports.create = async function (data) {
+    const user = await User.create(data);
+
+    // Generate salt
+    user.salt = await user.generateSalt(20);
+    user.hash = await user.hashPassword(user.salt, data.password);
+
+    user.save();
+
+    return user;
 };
 
 exports.findOneById = function (query) {

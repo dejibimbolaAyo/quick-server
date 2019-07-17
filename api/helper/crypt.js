@@ -1,4 +1,4 @@
-import { hash, compare } from "bcrypt";
+import { hash, compare, genSaltSync} from "bcrypt";
 const saltRounds = 10;
 /**
  * Generate crypt and decrypt
@@ -11,10 +11,12 @@ exports.getHash = (plainString) => {
         .catch((e) => console.log(e.message));
  }
 
- exports.compareHash = (plainString, hash) => {
-     console.log("plainString", plainString)
-     console.log("hash", hash)
-    return compare(plainString, hash)
+ exports.getSalt = (length) => {
+    return genSaltSync(length)
+ }
+
+ exports.compareHash = (salted, hash) => {
+    return compare(salted, hash)
         .then((res) => res)
         .catch((e) => console.log(e.message));
  }
