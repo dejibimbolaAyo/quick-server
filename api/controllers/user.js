@@ -8,7 +8,7 @@ const User = require(`${appRoot}/api/services/user`);
  * Get users
  */
 exports.getUsers = async function(req, res) {
-    console.log("Get users")
+    
 }
 
 /**
