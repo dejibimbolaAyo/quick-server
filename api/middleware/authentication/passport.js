@@ -9,7 +9,7 @@ const { ExtractJwt } = require('passport-jwt');
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('authorization'),
     secretOrKey   : process.env.JWT_SECRET
-}, async (req, payload, done) => {
+}, async (payload, done) => {
     try {
         // find user
         const user =  await User.findOneById(payload.sub);
